@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="hu"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>XmlWriter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">progtech</a> &gt; <a href="index.source.html" class="el_package">racztamas.progtech.model</a> &gt; <span class="el_source">XmlWriter.java</span></div><h1>XmlWriter.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package racztamas.progtech.model;
+
+import static racztamas.progtech.controller.FXMLController.model;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+/**
+ * Class to write in XML file.
+ *
+ * @author toti
+ */
+<span class="fc" id="L30">public class XmlWriter {</span>
+
+    /**
+     * Function to help for writer.
+     */
+    public void writehelper() {
+
+<span class="nc" id="L37">        List&lt;Modell&gt; help = new ArrayList&lt;&gt;();</span>
+
+<span class="nc" id="L39">        Modell colores = new Modell();</span>
+
+<span class="nc" id="L41">        colores.setId(model.getId());</span>
+<span class="nc" id="L42">        colores.setColor(model.getColor());</span>
+<span class="nc" id="L43">        colores.setCol(model.getCol());</span>
+<span class="nc" id="L44">        colores.setRow(model.getRow());</span>
+<span class="nc" id="L45">        help.add(colores);</span>
+<span class="nc" id="L46">        model.setColors(help);</span>
+
+<span class="nc" id="L48">    }</span>
+
+    /**
+     * Function to write in XML.
+     */
+    public void write() {
+
+        try {
+            /**
+             * Create a new Document builder.
+             */
+<span class="nc" id="L59">            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();</span>
+<span class="nc" id="L60">            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();</span>
+
+            // root elements
+<span class="nc" id="L63">            Document doc = docBuilder.newDocument();</span>
+<span class="nc" id="L64">            Element rootElement = doc.createElement(&quot;colors&quot;);</span>
+<span class="nc" id="L65">            doc.appendChild(rootElement);</span>
+
+<span class="nc bnc" id="L67" title="All 2 branches missed.">            for (int i = 0; i &lt; model.getColors().size(); i++) {</span>
+
+<span class="nc" id="L69">                Element staff = doc.createElement(&quot;guess&quot;);</span>
+<span class="nc" id="L70">                rootElement.appendChild(staff);</span>
+
+<span class="nc" id="L72">                Modell ez = model.getColors().get(i);</span>
+
+<span class="nc" id="L74">                Element id = doc.createElement(&quot;id&quot;);</span>
+<span class="nc" id="L75">                id.appendChild(doc.createTextNode(Integer.toString(ez.getId())));</span>
+<span class="nc" id="L76">                staff.appendChild(id);</span>
+
+<span class="nc" id="L78">                Element color = doc.createElement(&quot;color&quot;);</span>
+<span class="nc" id="L79">                color.appendChild(doc.createTextNode(ez.getColor()));</span>
+<span class="nc" id="L80">                staff.appendChild(color);</span>
+
+<span class="nc" id="L82">                Element col = doc.createElement(&quot;col&quot;);</span>
+<span class="nc" id="L83">                col.appendChild(doc.createTextNode(Integer.toString(ez.getCol())));</span>
+<span class="nc" id="L84">                staff.appendChild(col);</span>
+
+<span class="nc" id="L86">                Element row = doc.createElement(&quot;row&quot;);</span>
+<span class="nc" id="L87">                row.appendChild(doc.createTextNode(Integer.toString(ez.getRow())));</span>
+<span class="nc" id="L88">                staff.appendChild(row);</span>
+
+<span class="nc" id="L90">                TransformerFactory transformerFactory = TransformerFactory.newInstance();</span>
+<span class="nc" id="L91">                Transformer transformer = transformerFactory.newTransformer();</span>
+<span class="nc" id="L92">                DOMSource source = new DOMSource(doc);</span>
+<span class="nc" id="L93">                StreamResult result = new StreamResult(new File(&quot;/home/toti/NetBeansProjects/progtech/src/main/resources/xml/colors.xml&quot;));</span>
+
+<span class="nc" id="L95">                transformer.transform(source, result);</span>
+
+            }
+<span class="nc" id="L98">            System.out.println(&quot;File saved!&quot;);</span>
+<span class="nc" id="L99">        } catch (ParserConfigurationException pce) {</span>
+<span class="nc" id="L100">            pce.printStackTrace();</span>
+<span class="nc" id="L101">        } catch (TransformerException tfe) {</span>
+<span class="nc" id="L102">            tfe.printStackTrace();</span>
+<span class="nc" id="L103">        }</span>
+<span class="nc" id="L104">    }</span>
+
+    public void writesecret(String[] secret) {
+
+        try {
+
+<span class="nc" id="L110">            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();</span>
+<span class="nc" id="L111">            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();</span>
+
+<span class="nc" id="L113">            Document doc = docBuilder.newDocument();</span>
+<span class="nc" id="L114">            Element rootElement = doc.createElement(&quot;colors&quot;);</span>
+<span class="nc" id="L115">            doc.appendChild(rootElement);</span>
+
+<span class="nc bnc" id="L117" title="All 2 branches missed.">            for (int i = 0; i &lt; secret.length; i++) {</span>
+
+<span class="nc" id="L119">                Element staff = doc.createElement(&quot;secret&quot;);</span>
+<span class="nc" id="L120">                rootElement.appendChild(staff);</span>
+
+<span class="nc" id="L122">                Element color = doc.createElement(&quot;color&quot;);</span>
+<span class="nc" id="L123">                color.appendChild(doc.createTextNode(secret[i]));</span>
+<span class="nc" id="L124">                staff.appendChild(color);</span>
+
+<span class="nc" id="L126">                TransformerFactory transformerFactory = TransformerFactory.newInstance();</span>
+<span class="nc" id="L127">                Transformer transformer = transformerFactory.newTransformer();</span>
+<span class="nc" id="L128">                DOMSource source = new DOMSource(doc);</span>
+<span class="nc" id="L129">                StreamResult result = new StreamResult(new File(&quot;/home/toti/NetBeansProjects/progtech/src/main/resources/xml/secrets.xml&quot;));</span>
+
+<span class="nc" id="L131">                transformer.transform(source, result);</span>
+
+            }
+<span class="nc" id="L134">            System.out.println(&quot;File saved!&quot;);</span>
+<span class="nc" id="L135">        } catch (ParserConfigurationException pce) {</span>
+<span class="nc" id="L136">            pce.printStackTrace();</span>
+<span class="nc" id="L137">        } catch (TransformerException tfe) {</span>
+<span class="nc" id="L138">            tfe.printStackTrace();</span>
+<span class="nc" id="L139">        }</span>
+<span class="nc" id="L140">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

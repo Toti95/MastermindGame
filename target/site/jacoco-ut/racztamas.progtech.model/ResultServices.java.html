@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="hu"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ResultServices.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">progtech</a> &gt; <a href="index.source.html" class="el_package">racztamas.progtech.model</a> &gt; <span class="el_source">ResultServices.java</span></div><h1>ResultServices.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package racztamas.progtech.model;
+
+import static racztamas.progtech.controller.FXMLController.model;
+import java.util.ArrayList;
+
+
+/**
+ *
+ * @author toti
+ */
+<span class="fc" id="L16">public class ResultServices {</span>
+    
+    public void blackpins(String[] guess, String[] secret) {
+       
+<span class="fc" id="L20">        int blacks = 0;</span>
+
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        for (int f = 0; f &lt; 4; f++) {</span>
+
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">            if (guess[f].equals(secret[f])) {</span>
+<span class="fc" id="L25">                blacks++;</span>
+            }
+        }
+<span class="fc" id="L28">        model.setBlackpin(blacks);</span>
+       
+<span class="fc" id="L30">    }</span>
+    
+    public void whitepins(String[] guess, String[] secret) {
+
+<span class="fc" id="L34">        int whites = 0;</span>
+
+<span class="fc" id="L36">        ArrayList&lt;Integer&gt; alreadyProcessed = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        for (String color : secret) {</span>
+<span class="fc" id="L39">            int same = 0;</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">            for (int k = 0; k &lt; 4; k++) {</span>
+<span class="fc bfc" id="L41" title="All 4 branches covered.">                if (color.equals(guess[k]) &amp;&amp; !alreadyProcessed.contains(k)) {</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">                    if (same &lt; 1) {</span>
+<span class="fc" id="L43">                        alreadyProcessed.add(k);</span>
+<span class="fc" id="L44">                        whites++;</span>
+<span class="fc" id="L45">                        same++;</span>
+                    }
+                }
+            }
+        }
+        
+<span class="fc" id="L51">        model.setWhitepin(whites);</span>
+<span class="fc" id="L52">        model.setWhitepin(model.getWhitepin()- model.getBlackpin());</span>
+<span class="fc" id="L53">    }</span>
+    
+    public void win()
+    {
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">         if (model.getBlackpin() == 4)</span>
+        {
+<span class="fc" id="L59">            model.setWin(true);</span>
+        }
+<span class="fc" id="L61">    }</span>
+    
+    public void lose()
+    {
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (model.getRow()&lt;0)</span>
+        {
+<span class="fc" id="L67">            model.setLose(true);</span>
+        }
+<span class="fc" id="L69">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
