@@ -1,9 +1,0 @@
-GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-progtech,racztamas.progtech.model,XmlWriter,250,3,4,0,65,1,5,1,3,1
-progtech,racztamas.progtech.model,CounterService,0,58,0,0,0,19,0,8,0,8
-progtech,racztamas.progtech.model,ImageService,267,13,49,0,60,3,40,1,5,1
-progtech,racztamas.progtech.model,Modell,66,83,0,0,22,32,9,15,9,15
-progtech,racztamas.progtech.model,ResultServices,0,103,3,15,0,26,3,11,0,5
-progtech,racztamas.progtech.model,XmlReader,289,0,44,0,62,0,32,0,3,0
-progtech,racztamas.progtech.controller,FXMLController,1448,13,128,0,304,3,89,1,9,1
-progtech,racztamas.progtech.controller,MainApp,32,0,0,0,10,0,3,0,3,0
