@@ -18,6 +18,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -28,6 +30,25 @@ import org.w3c.dom.Element;
  * @author toti
  */
 public class XmlWriter {
+    
+        final static Logger logger = LoggerFactory.getLogger(XmlWriter.class);
+
+    
+        private final String osName = System.getProperty("os.name").toLowerCase();
+	
+	private final String userName = System.getProperty("user.name");
+	
+	private final String windowsFilePath = "C:" + File.separator + "Users" + File.separator + 
+    		userName + File.separator + "Documents" + File.separator + "colors.xml";
+	
+	private final String linuxFilePath = File.separator + "home" + File.separator + userName + 
+			File.separator + "colors.xml";
+        
+        private final String windowsSecretFilePath = "C:" + File.separator + "Users" + File.separator + 
+    		userName + File.separator + "Documents" + File.separator + "secret.xml";
+	
+	private final String linuxSecretFilePath = File.separator + "home" + File.separator + userName + 
+			File.separator + "secret.xml";
 
     /**
      * Function to help for writer.
@@ -52,6 +73,7 @@ public class XmlWriter {
      */
     public void write() {
 
+            
         try {
             /**
              * Create a new Document builder.
@@ -59,7 +81,6 @@ public class XmlWriter {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-            // root elements
             Document doc = docBuilder.newDocument();
             Element rootElement = doc.createElement("colors");
             doc.appendChild(rootElement);
@@ -90,12 +111,22 @@ public class XmlWriter {
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
-                StreamResult result = new StreamResult(new File("/home/toti/NetBeansProjects/progtech/src/main/resources/xml/colors.xml"));
-
+                
+                File xml = null;
+		
+		if (osName.contains("windows")) {
+			xml = new File(windowsFilePath);
+		}
+		else if (osName.contains("linux") || osName.contains("unix")) {
+			xml = new File(linuxFilePath);
+		}
+                
+                
+                StreamResult result = new StreamResult(xml);
                 transformer.transform(source, result);
 
             }
-            System.out.println("File saved!");
+            logger.info("Colors saved.");
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
         } catch (TransformerException tfe) {
@@ -126,12 +157,21 @@ public class XmlWriter {
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
-                StreamResult result = new StreamResult(new File("/home/toti/NetBeansProjects/progtech/src/main/resources/xml/secrets.xml"));
+                
+                File xml = null;
+		
+		if (osName.contains("windows")) {
+			xml = new File(windowsSecretFilePath);
+		}
+		else if (osName.contains("linux") || osName.contains("unix")) {
+			xml = new File(linuxSecretFilePath);
+		}
+                StreamResult result = new StreamResult(xml);
 
                 transformer.transform(source, result);
 
             }
-            System.out.println("File saved!");
+            logger.info("Secret colors saved.");
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
         } catch (TransformerException tfe) {

@@ -136,4 +136,76 @@ public class ImageService {
         }
     }
 
+    public void loadImages(Modell ez, String[] guess) {
+
+        switch (model.getColor()) {
+            case "redbutton": {
+                model.setId(ez.getId());
+                model.setCol(ez.getCol());
+                model.setRow(ez.getRow());
+                guess[model.getCol()] = model.getColor();
+                model.setGuess(guess);
+                break;
+            }
+            case "bluebutton": {
+                model.setId(ez.getId());
+                model.setCol(ez.getCol());
+                model.setRow(ez.getRow());
+                guess[model.getCol()] = model.getColor();
+                model.setGuess(guess);
+                break;
+            }
+            case "orangebutton": {
+                model.setId(ez.getId());
+                model.setCol(ez.getCol());
+                model.setRow(ez.getRow());
+                guess[model.getCol()] = model.getColor();
+                model.setGuess(guess);
+                break;
+            }
+            case "yellowbutton": {
+                model.setId(ez.getId());
+                model.setCol(ez.getCol());
+                model.setRow(ez.getRow());
+                guess[model.getCol()] = model.getColor();
+                model.setGuess(guess);
+                break;
+            }
+            case "brownbutton": {
+                model.setId(ez.getId());
+                model.setCol(ez.getCol());
+                model.setRow(ez.getRow());
+                guess[model.getCol()] = model.getColor();
+                model.setGuess(guess);
+                break;
+            }
+            case "blackbutton": {
+                model.setId(ez.getId());
+                model.setCol(ez.getCol());
+                model.setRow(ez.getRow());
+                guess[model.getCol()] = model.getColor();
+                break;
+            }
+            case "greenbutton": {
+                model.setId(ez.getId());
+                model.setCol(ez.getCol());
+                model.setRow(ez.getRow());
+                guess[model.getCol()] = model.getColor();
+                model.setGuess(guess);
+                break;
+            }
+            case "whitebutton": {
+                model.setId(ez.getId());
+                model.setCol(ez.getCol());
+                model.setRow(ez.getRow());
+                guess[model.getCol()] = model.getColor();
+                model.setGuess(guess);
+                break;
+            }
+            default:
+                break;
+        }
+
+    }
+
 }

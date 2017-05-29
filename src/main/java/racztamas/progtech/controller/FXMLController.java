@@ -24,9 +24,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javax.xml.parsers.ParserConfigurationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 public class FXMLController implements Initializable {
+
+    /**
+     * Logger variable.
+     */
+    final static Logger logger = LoggerFactory.getLogger(FXMLController.class);
 
     @FXML
     private Button redbutton;
@@ -199,10 +206,10 @@ public class FXMLController implements Initializable {
                 img.generate(guess);
             }
         } catch (IllegalArgumentException e) {
-
-            System.out.println("Negative encouneterd. Want to Continue");
-
+            logger.error("Negative encouneterd. Want to Continue");
         }
+        
+        logger.info("One color added.");
 
         counterService.IncrementCol();
 
@@ -248,6 +255,7 @@ public class FXMLController implements Initializable {
 
             if (model.isWin()) {
                 label.setText("You win this game!");
+                logger.info("The player won this game.");
                 result();
             }
             counterService.ColToZero();
@@ -258,6 +266,7 @@ public class FXMLController implements Initializable {
         resultServices.lose();
         if (model.isLose()) {
             label.setText("You lose this game!");
+            logger.info("The player lost this game.");
             result();
         }
 
@@ -277,7 +286,7 @@ public class FXMLController implements Initializable {
             greenbutton.setVisible(false);
             brownbutton.setVisible(false);
             orangebutton.setVisible(false);
-
+            logger.info("The player gave up the game.");
         }
     }
 
@@ -313,6 +322,7 @@ public class FXMLController implements Initializable {
             background.setVisible(false);
             mainmenu.setVisible(false);
 
+            logger.info("New game started.");
             img.secrets(secret);
             makeSecret();
             xmlWriter.writesecret(secret);
@@ -326,6 +336,7 @@ public class FXMLController implements Initializable {
                 img.removeFromList();
                 counterService.DecrementId();
                 counterService.DecrementCol();
+                logger.info("Remove one element.");
             }
         }
         if (event.getSource() == loadgame) {
@@ -340,62 +351,49 @@ public class FXMLController implements Initializable {
                 Modell ez = model.getColors().get(m);
                 tmp.add(ez);
                 img.setColors();
-                if ("redbutton".equals(ez.getColor())) {
-                    model.setColor("redbutton");
-                    model.setId(ez.getId());
-                    model.setCol(ez.getCol());
-                    model.setRow(ez.getRow());
-                    places.add(new ImageView(red), ez.getCol(), ez.getRow());
-                    img.generate(guess);
-                } else if ("bluebutton".equals(ez.getColor())) {
-                    model.setColor("bluebutton");
-                    model.setId(ez.getId());
-                    model.setCol(ez.getCol());
-                    model.setRow(ez.getRow());
-                    places.add(new ImageView(blue), ez.getCol(), ez.getRow());
-                    img.generate(guess);
-                } else if ("blackbutton".equals(ez.getColor())) {
-                    model.setColor("blackbutton");
-                    model.setId(ez.getId());
-                    model.setCol(ez.getCol());
-                    model.setRow(ez.getRow());
-                    places.add(new ImageView(black), ez.getCol(), ez.getRow());
-                    img.generate(guess);
-                } else if ("yellowbutton".equals(ez.getColor())) {
-                    model.setColor("yellowbutton");
-                    model.setId(ez.getId());
-                    model.setCol(ez.getCol());
-                    model.setRow(ez.getRow());
-                    places.add(new ImageView(yellow), ez.getCol(), ez.getRow());
-                    img.generate(guess);
-                } else if ("whitebutton".equals(ez.getColor())) {
-                    model.setColor("whitebutton");
-                    model.setId(ez.getId());
-                    model.setCol(ez.getCol());
-                    model.setRow(ez.getRow());
-                    places.add(new ImageView(white), ez.getCol(), ez.getRow());
-                    img.generate(guess);
-                } else if ("orangebutton".equals(ez.getColor())) {
-                    model.setColor("orangebutton");
-                    model.setId(ez.getId());
-                    model.setCol(ez.getCol());
-                    model.setRow(ez.getRow());
-                    places.add(new ImageView(orange), ez.getCol(), ez.getRow());
-                    img.generate(guess);
-                } else if ("greenbutton".equals(ez.getColor())) {
-                    model.setColor("greenbutton");
-                    model.setId(ez.getId());
-                    model.setCol(ez.getCol());
-                    model.setRow(ez.getRow());
-                    places.add(new ImageView(green), ez.getCol(), ez.getRow());
-                    img.generate(guess);
-                } else if ("brownbutton".equals(ez.getColor())) {
-                    model.setColor("brownbutton");
-                    model.setId(ez.getId());
-                    model.setCol(ez.getCol());
-                    model.setRow(ez.getRow());
-                    places.add(new ImageView(brown), ez.getCol(), ez.getRow());
-                    img.generate(guess);
+                switch (ez.getColor()) {
+                    case "redbutton":
+                        model.setColor("redbutton");
+                        places.add(new ImageView(red), ez.getCol(), ez.getRow());
+                        img.loadImages(ez, guess);
+                        break;
+                    case "bluebutton":
+                        model.setColor("bluebutton");
+                        places.add(new ImageView(blue), ez.getCol(), ez.getRow());
+                        img.loadImages(ez, guess);
+                        break;
+                    case "blackbutton":
+                        model.setColor("blackbutton");
+                        places.add(new ImageView(black), ez.getCol(), ez.getRow());
+                        img.loadImages(ez, guess);
+                        break;
+                    case "yellowbutton":
+                        model.setColor("yellowbutton");
+                        places.add(new ImageView(yellow), ez.getCol(), ez.getRow());
+                        img.loadImages(ez, guess);
+                        break;
+                    case "whitebutton":
+                        model.setColor("whitebutton");
+                        places.add(new ImageView(white), ez.getCol(), ez.getRow());
+                        img.loadImages(ez, guess);
+                        break;
+                    case "orangebutton":
+                        model.setColor("orangebutton");
+                        places.add(new ImageView(orange), ez.getCol(), ez.getRow());
+                        img.loadImages(ez, guess);
+                        break;
+                    case "greenbutton":
+                        model.setColor("greenbutton");
+                        places.add(new ImageView(green), ez.getCol(), ez.getRow());
+                        img.loadImages(ez, guess);
+                        break;
+                    case "brownbutton":
+                        model.setColor("brownbutton");
+                        places.add(new ImageView(brown), ez.getCol(), ez.getRow());
+                        img.loadImages(ez, guess);
+                        break;
+                    default:
+                        break;
                 }
 
                 if (m % 4 == 3) {
@@ -442,6 +440,7 @@ public class FXMLController implements Initializable {
                 counterService.IncrementCol();
             }
             counterService.IncrementId();
+            logger.info("Old game state loaded.");
 
         }
     }
@@ -472,6 +471,7 @@ public class FXMLController implements Initializable {
             stage.show();
         } else if (event.getSource() == quit) {
             System.exit(0);
+            logger.info("The game closed.");
         }
     }
 
@@ -498,6 +498,7 @@ public class FXMLController implements Initializable {
                 pincol = 0;
             }
         }
+        logger.info("Pins added.");
     }
 
     public void makeSecret() {
@@ -541,6 +542,7 @@ public class FXMLController implements Initializable {
                     break;
             }
         }
+        logger.info("Secret colors generated.");
     }
 
     public void result() {
