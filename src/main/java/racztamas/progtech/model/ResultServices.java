@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package racztamas.progtech.model;
 
 import static racztamas.progtech.controller.FXMLController.model;
@@ -10,11 +5,19 @@ import java.util.ArrayList;
 
 
 /**
- *
+ * {@code ResultServices} osztály az adott játékállás eredményének ellenőrzésére.
+ * 
  * @author toti
  */
 public class ResultServices {
     
+    /**
+     * Összehasonlítja a két tömböt, hogy hány szín egyezik meg, és hogy a színek
+     * azonos pozícióban vannak.
+     * 
+     * @param guess a játékos tippjeinek tömbje
+     * @param secret a titkos színek tömbje
+     */
     public void blackpins(String[] guess, String[] secret) {
        
         int blacks = 0;
@@ -29,6 +32,13 @@ public class ResultServices {
        
     }
     
+    /**
+     * Összehasonlítja a két tömböt, hogy hány szín egyezik meg,
+     * és hogy ezeknek a színeknek a pozíciója eltérő.
+     * 
+     * @param guess a játékos tippjeinek tömbje
+     * @param secret a titkos színek tömbje
+     */
     public void whitepins(String[] guess, String[] secret) {
 
         int whites = 0;
@@ -52,6 +62,9 @@ public class ResultServices {
         model.setWhitepin(model.getWhitepin()- model.getBlackpin());
     }
     
+    /**
+     * Ellenőrzi, hogy a játékos megnyerte a játékot.
+     */
     public void win()
     {
          if (model.getBlackpin() == 4)
@@ -60,6 +73,9 @@ public class ResultServices {
         }
     }
     
+    /**
+     * Ellenőrzi, hogy a játékos elveszetette a játékot.
+     */
     public void lose()
     {
         if (model.getRow()<0)

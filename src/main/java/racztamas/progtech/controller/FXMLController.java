@@ -24,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -158,7 +159,7 @@ public class FXMLController implements Initializable {
     List<Modell> tmp = new ArrayList<>();
 
     @FXML
-    private void handleButtonAction(ActionEvent event) {
+    private void handleButtonAction(ActionEvent event) throws ParserConfigurationException, TransformerException {
 
         counterService.IncrementId();
 
@@ -208,7 +209,7 @@ public class FXMLController implements Initializable {
         } catch (IllegalArgumentException e) {
             logger.error("Negative encouneterd. Want to Continue");
         }
-        
+
         logger.info("One color added.");
 
         counterService.IncrementCol();
@@ -291,7 +292,7 @@ public class FXMLController implements Initializable {
     }
 
     @FXML
-    private void newgameButtonAction(ActionEvent event) throws ParserConfigurationException, SAXException, IOException {
+    private void newgameButtonAction(ActionEvent event) throws ParserConfigurationException, SAXException, IOException, TransformerException {
         if (event.getSource() == newgame) {
             places.getChildren().clear();
             firstPin.getChildren().clear();
@@ -340,107 +341,109 @@ public class FXMLController implements Initializable {
             }
         }
         if (event.getSource() == loadgame) {
-            loadgame.setVisible(false);
-            newgame.setVisible(false);
 
             xmlReader.readsecret(secret);
             makeSecret();
 
             xmlReader.read();
-            for (int m = 0; m < model.getColors().size(); m++) {
-                Modell ez = model.getColors().get(m);
-                tmp.add(ez);
-                img.setColors();
-                switch (ez.getColor()) {
-                    case "redbutton":
-                        model.setColor("redbutton");
-                        places.add(new ImageView(red), ez.getCol(), ez.getRow());
-                        img.loadImages(ez, guess);
-                        break;
-                    case "bluebutton":
-                        model.setColor("bluebutton");
-                        places.add(new ImageView(blue), ez.getCol(), ez.getRow());
-                        img.loadImages(ez, guess);
-                        break;
-                    case "blackbutton":
-                        model.setColor("blackbutton");
-                        places.add(new ImageView(black), ez.getCol(), ez.getRow());
-                        img.loadImages(ez, guess);
-                        break;
-                    case "yellowbutton":
-                        model.setColor("yellowbutton");
-                        places.add(new ImageView(yellow), ez.getCol(), ez.getRow());
-                        img.loadImages(ez, guess);
-                        break;
-                    case "whitebutton":
-                        model.setColor("whitebutton");
-                        places.add(new ImageView(white), ez.getCol(), ez.getRow());
-                        img.loadImages(ez, guess);
-                        break;
-                    case "orangebutton":
-                        model.setColor("orangebutton");
-                        places.add(new ImageView(orange), ez.getCol(), ez.getRow());
-                        img.loadImages(ez, guess);
-                        break;
-                    case "greenbutton":
-                        model.setColor("greenbutton");
-                        places.add(new ImageView(green), ez.getCol(), ez.getRow());
-                        img.loadImages(ez, guess);
-                        break;
-                    case "brownbutton":
-                        model.setColor("brownbutton");
-                        places.add(new ImageView(brown), ez.getCol(), ez.getRow());
-                        img.loadImages(ez, guess);
-                        break;
-                    default:
-                        break;
-                }
+            if (model.isExists()) {
+                loadgame.setVisible(false);
+                newgame.setVisible(false);
+                for (int m = 0; m < model.getColors().size(); m++) {
+                    Modell ez = model.getColors().get(m);
+                    tmp.add(ez);
+                    img.setColors();
+                    switch (ez.getColor()) {
+                        case "redbutton":
+                            model.setColor("redbutton");
+                            places.add(new ImageView(red), ez.getCol(), ez.getRow());
+                            img.loadImages(ez, guess);
+                            break;
+                        case "bluebutton":
+                            model.setColor("bluebutton");
+                            places.add(new ImageView(blue), ez.getCol(), ez.getRow());
+                            img.loadImages(ez, guess);
+                            break;
+                        case "blackbutton":
+                            model.setColor("blackbutton");
+                            places.add(new ImageView(black), ez.getCol(), ez.getRow());
+                            img.loadImages(ez, guess);
+                            break;
+                        case "yellowbutton":
+                            model.setColor("yellowbutton");
+                            places.add(new ImageView(yellow), ez.getCol(), ez.getRow());
+                            img.loadImages(ez, guess);
+                            break;
+                        case "whitebutton":
+                            model.setColor("whitebutton");
+                            places.add(new ImageView(white), ez.getCol(), ez.getRow());
+                            img.loadImages(ez, guess);
+                            break;
+                        case "orangebutton":
+                            model.setColor("orangebutton");
+                            places.add(new ImageView(orange), ez.getCol(), ez.getRow());
+                            img.loadImages(ez, guess);
+                            break;
+                        case "greenbutton":
+                            model.setColor("greenbutton");
+                            places.add(new ImageView(green), ez.getCol(), ez.getRow());
+                            img.loadImages(ez, guess);
+                            break;
+                        case "brownbutton":
+                            model.setColor("brownbutton");
+                            places.add(new ImageView(brown), ez.getCol(), ez.getRow());
+                            img.loadImages(ez, guess);
+                            break;
+                        default:
+                            break;
+                    }
 
-                if (m % 4 == 3) {
-                    resultServices.blackpins(guess, secret);
-                    resultServices.whitepins(guess, secret);
-                    switch (model.getRow()) {
-                        case 9:
-                            pinner(firstPin);
-                            break;
-                        case 8:
-                            pinner(secondPin);
-                            break;
-                        case 7:
-                            pinner(thirdPin);
-                            break;
-                        case 6:
-                            pinner(fourthPin);
-                            break;
-                        case 5:
-                            pinner(fifthPin);
-                            break;
-                        case 4:
-                            pinner(sixthPin);
-                            break;
-                        case 3:
-                            pinner(seventhPin);
-                            break;
-                        case 2:
-                            pinner(eighthPin);
-                            break;
-                        case 1:
-                            pinner(ninthPin);
-                            break;
-                        case 0:
-                            pinner(tenthPin);
+                    if (m % 4 == 3) {
+                        resultServices.blackpins(guess, secret);
+                        resultServices.whitepins(guess, secret);
+                        switch (model.getRow()) {
+                            case 9:
+                                pinner(firstPin);
+                                break;
+                            case 8:
+                                pinner(secondPin);
+                                break;
+                            case 7:
+                                pinner(thirdPin);
+                                break;
+                            case 6:
+                                pinner(fourthPin);
+                                break;
+                            case 5:
+                                pinner(fifthPin);
+                                break;
+                            case 4:
+                                pinner(sixthPin);
+                                break;
+                            case 3:
+                                pinner(seventhPin);
+                                break;
+                            case 2:
+                                pinner(eighthPin);
+                                break;
+                            case 1:
+                                pinner(ninthPin);
+                                break;
+                            case 0:
+                                pinner(tenthPin);
 
+                        }
                     }
                 }
+                if (model.getCol() == 3) {
+                    counterService.DecrementRow();
+                    counterService.ColToZero();
+                } else {
+                    counterService.IncrementCol();
+                }
+                counterService.IncrementId();
+                logger.info("Old game state loaded.");
             }
-            if (model.getCol() == 3) {
-                counterService.DecrementRow();
-                counterService.ColToZero();
-            } else {
-                counterService.IncrementCol();
-            }
-            counterService.IncrementId();
-            logger.info("Old game state loaded.");
 
         }
     }
